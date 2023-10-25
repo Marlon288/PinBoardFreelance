@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Freelancing Form</title>
+  </head>
+  <body>
+
+
+    
+    <div class="container mt-5">
+        <h2 class="mb-4">Project Submission Form</h2>
+        <form>
+            <div class="row my-3">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="projectTitle">Project Title:<span class="required">*</span></label>
+                        <input type="text" class="form-control" id="projectTitle" placeholder="Enter project title" maxlength="50" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="lookingFor">Looking for:<span class="required">*</span></label>
+                        <input type="text" class="form-control" id="lookingFor" placeholder="e.g., Developer, Law Student" maxlength="50" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-3">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <label for="deliverables">Deliverables:</label>
+                        <input type="text" class="form-control" id="deliverables" placeholder="e.g., Website, 3D Model" maxlength="50">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="deadline">Deadline:</label>
+                        <input type="date" class="form-control" id="deadline">
+                    </div>                    
+                </div>
+            </div>
+            <div class="row my-3">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <label for="compensation">Compensation:<span class="required">*</span></label>
+                        <input type="text" class="form-control" id="compensation" placeholder="e.g., Money, Percentage Stake" maxlength="50" required>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="contact">Contact Information:<span class="required">*</span></label>
+                        <input type="text" class="form-control" id="contact" placeholder="How to get in touch" maxlength="50" required>
+                    </div>               
+                </div>
+            </div>
+
+            <div class="form-group mt-3 mb-4">
+                <label for="description">Project Description:<span class="required">*</span></label>
+                <textarea class="form-control" id="description" rows="4" placeholder="Provide a detailed description of your project(maximum 1000 characters)" maxlength="1000" required></textarea>
+            </div>
+
+
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+    </div>
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+
+    <script src="/index.js"></script>
+  </body>
+</html>
