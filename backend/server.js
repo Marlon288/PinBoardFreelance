@@ -1,60 +1,86 @@
 const express = require('express');
-const multer = require('multer');
-const QRCode = require('qrcode');
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
 
 const app = express();
 const PORT = 3000;
 
-// Set up multer for storing uploaded files
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './uploads/')
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname)
-  }
-})
+// Middleware to parse JSON bodies
+app.use(express.json());
 
-const upload = multer({ storage: storage });
-
-// Ensure upload directory exists
-
-if (!fs.existsSync('./uploads')){
-    fs.mkdirSync('./uploads');
+// Ensure data directory exists
+const dataDir = path.join(__dirname, 'data');
+if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir);
 }
 
-app.post('/upload', upload.single('pdf'), async (req, res) => {
-    if (req.file) {
-        // File has been uploaded successfully
+app.post('/submit-form', (req, res) => {
+    // Assume req.body will contain the form data in JSON format
+    const formData = req.body;
+    
+    // Generate a unique identifier for the submission, like a timestamp or UUID
+    const submissionId = Date.now();
+    
+    // Save the JSON data to a file
+    const filePath = path.join(dataDir, `submission-${submissionId}.json`);
+    fs.writeFile(filePath, JSON.stringify(formData, null, 2), (err) => {
+        if (err) {
+            console.error('Error saving JSON data:', err);
+            res.status(500).json({ success: false, message: 'Error saving form data' });
+            return;
+        }
 
-        // Generate a QR code that points to the uploaded file
-        //Change this to URL
-        //const filePath = `http://your-server-domain-or-ip/uploads/${req.file.filename}`;
-        const filePath = `http://localhost:3000/uploads/${req.file.filename}`;
-        
-        const qrDataURL = await QRCode.toDataURL(filePath);  // Convert the filePath to a QR Code
-
+        // Respond with a success message
         res.json({
             success: true,
-            message: 'File uploaded successfully!',
-            filePath: filePath,
-            qrCode: qrDataURL
+            message: 'Form data saved successfully!',
+            submissionId: submissionId
         });
-    } else {
-        res.json({
-            success: false,
-            message: 'Error uploading file!'
-        });
+    });
+});
+app.get('/submissions', async (req, res) => {
+  const directoryPath = path.join(__dirname, 'data');
+  fs.readdir(directoryPath, function (err, files) {
+    if (err) {
+      console.log('Unable to scan directory: ' + err);
+      res.status(500).send('Unable to read submissions');
+      return;
     }
+    let submissions = [];
+    files.forEach(function (file) {
+      let rawData = fs.readFileSync(path.join(directoryPath, file));
+      let submission = JSON.parse(rawData);
+      // Add the 'id' property which is the name of the file without the extension
+      submission.id = path.basename(file, '.json');
+      submissions.push(submission);
+    });
+    res.json(submissions);
+  });
+});
+app.get('/submissions/:id', (req, res) => {
+  const submissionId = req.params.id; // This is the name of your file without the .json extension
+  const filePath = path.join(__dirname, 'data', `${submissionId}.json`);
+
+  fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+          console.log('Error reading file:', err);
+          res.status(500).send('Error reading submission');
+          return;
+      }
+      let submission = JSON.parse(data);
+      // Add the 'id' property which is the name of the file without the extension
+      submission.id = submissionId;
+      res.json(submission);
+  });
 });
 
-// Server uploaded PDFs
-app.use('/pdf', express.static('uploads'));
 
+
+
+
+// Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(PORT, () => {
-  console.log(`Server started on http://localhost:${PORT}`);
+    console.log(`Server started on http://localhost:${PORT}`);
 });
